@@ -83,6 +83,7 @@ func (c *Client) do(method, url string, out interface{}) error {
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("Content-type", "application/json")
 	req.Header.Set("Authorization", c.authToken)
+	req.Header.Set("User-Agent", "https://github.com/msiebuhr/seas-nve")
 	resp, err := c.c.Do(req)
 	defer resp.Body.Close()
 
