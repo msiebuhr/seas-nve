@@ -2,6 +2,7 @@ package seasnve
 
 import (
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"net/http"
 	"time"
@@ -69,6 +70,11 @@ func NewClient(username, password string) (Client, error) {
 	// Read out Autentication token
 	r, _ = regexp.Compile(`var token = '(Basic [^']+)';`)
 	authJs := r.FindSubmatch(body)
+
+	if len(authJs) != 2 { // Match and extraction
+		return c, errors.New("Not authorized. Wrong username or password")
+	}
+
 	c.authToken = string(authJs[1])
 
 	return c, err
