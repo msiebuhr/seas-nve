@@ -5,11 +5,11 @@ import (
 	"errors"
 	"io/ioutil"
 	"net/http"
-	"time"
 	"net/http/cookiejar"
 	"net/url"
 	"regexp"
 	"strings"
+	"time"
 )
 
 type Client struct {
@@ -48,18 +48,6 @@ func NewClient(username, password string) (Client, error) {
 	if err != nil {
 		return c, err
 	}
-	req.Header.Set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
-	//req.Header.Set("Accept-Encoding","gzip, deflate, br")
-	req.Header.Set("Accept-Language", "da-DK,en-US;q=0.8,da;q=0.6,en;q=0.4")
-	req.Header.Set("Cache-Control", "no-cache")
-	req.Header.Set("Connection", "keep-alive")
-	req.Header.Set("DNT", "1")
-	req.Header.Set("Host", "mit.seas-nve.dk")
-	req.Header.Set("Origin", "https://mit.seas-nve.dk")
-	req.Header.Set("Pragma", "no-cache")
-	req.Header.Set("Referer", "https://mit.seas-nve.dk/login/private")
-	//Upgrade-Insecure-Requests:1
-	req.Header.Set("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36)")
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
 	resp, err = c.c.Do(req)
@@ -175,9 +163,9 @@ const AGGREGATION_DAY = "day"
 type Points struct {
 	MeteringPoints []struct {
 		MeteringPoint string
-		Values []struct {
+		Values        []struct {
 			Start time.Time
-			End time.Time
+			End   time.Time
 			Value float64
 		}
 	}
