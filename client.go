@@ -24,7 +24,7 @@ func NewClient(username, password string) (Client, error) {
 
 	vals := url.Values{
 		"main_0$txtEmail":    {username},
-		"main_0$txtPassword": {passoword},
+		"main_0$txtPassword": {password},
 		//"main_0$chkLoginRememberMe": {"on"},
 		"main_0$ctl01": {"LOG IND"},
 	}
