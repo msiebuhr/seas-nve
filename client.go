@@ -17,12 +17,16 @@ type Client struct {
 	authToken string
 }
 
-func NewClient(username, password string) (Client, error) {
+func NewClient() Client {
 	jar, _ := cookiejar.New(nil)
 	c := Client{
 		c: http.Client{Jar: jar},
 	}
 
+	return c
+}
+
+func (c *Client) Login(username, password string) error {
 	vals := url.Values{
 		"main_0$txtEmail":    {username},
 		"main_0$txtPassword": {password},
@@ -46,7 +50,7 @@ func NewClient(username, password string) (Client, error) {
 	// Make login request
 	req, err := http.NewRequest("POST", "https://mit.seas-nve.dk/login/private", strings.NewReader(vals.Encode()))
 	if err != nil {
-		return c, err
+		return err
 	}
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 
@@ -60,12 +64,12 @@ func NewClient(username, password string) (Client, error) {
 	authJs := r.FindSubmatch(body)
 
 	if len(authJs) != 2 { // Match and extraction
-		return c, errors.New("Not authorized. Wrong username or password")
+		return errors.New("Not authorized. Wrong username or password")
 	}
 
 	c.authToken = string(authJs[1])
 
-	return c, err
+	return err
 }
 
 func (c *Client) do(method, url string, out interface{}) error {

@@ -14,9 +14,12 @@ var password = flag.String("password", os.Getenv("PASSWORD"), "Username for mit.
 func main() {
 	flag.Parse()
 
-	c, err := seasnve.NewClient(*email, *password)
+	c := seasnve.NewClient()
+
+	err := c.Login(*email, *password)
 	if err != nil {
-		panic(err)
+		fmt.Println("# error logging in:", err)
+		os.Exit(1)
 	}
 
 	data, err := c.Metering()
