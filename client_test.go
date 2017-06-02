@@ -2,8 +2,8 @@ package seasnve
 
 import (
 	"os"
-	"time"
 	"testing"
+	"time"
 )
 
 func TestFailedLogin(t *testing.T) {
@@ -59,7 +59,7 @@ func TestFull(t *testing.T) {
 				p, err := c.MeteringPoints(
 					mp.MeteringPoint,
 					time.Now(),
-					time.Now().Add(-4 * 24 *  time.Hour),
+					time.Now().Add(-4*24*time.Hour),
 					AGGREGATION_DAY,
 				)
 

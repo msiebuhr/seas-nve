@@ -3,6 +3,7 @@ package seasnve
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/http/cookiejar"
@@ -10,7 +11,6 @@ import (
 	"regexp"
 	"strings"
 	"time"
-	"fmt"
 )
 
 type Client struct {
@@ -195,7 +195,7 @@ func (c *Client) MeteringPoints(point string, start, end time.Time, aggr string)
 		aggr,
 	)
 
-	err := c.do( "GET", url, &p,)
+	err := c.do("GET", url, &p)
 
 	return p, err
 }
