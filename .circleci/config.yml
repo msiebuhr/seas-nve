@@ -1,0 +1,29 @@
+version: 2
+jobs:
+    build:
+        working_directory: /go/src/github.com/msiebuhr/seas-nve
+
+        docker:
+            - image: golang:latest
+
+
+        environment:
+            TEST_RESULTS: /tmp/test-results
+
+        steps:
+            - checkout
+            - run: go get -v ./...
+
+            - run: mkdir -p $TEST_RESULTS
+
+            # Normally, this step would be in a custom primary image;
+            # we've added it here for the sake of explanation.
+            - run: go get github.com/jstemmer/go-junit-report
+
+            - run: go fmt .
+
+            - run:
+                command: go test -v . 2>&1 | go-junit-report > ${TEST_RESULTS}/go-test-report.xml
+
+            - store_test_results:
+                path: /tmp/test-results
