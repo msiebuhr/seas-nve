@@ -10,6 +10,7 @@ import (
 	"regexp"
 	"strings"
 	"time"
+	"fmt"
 )
 
 type Client struct {
@@ -165,7 +166,7 @@ func (c *Client) Management() (Management, error) {
 	return m, err
 }
 
-const AGGREGATION_DAY = "day"
+const AGGREGATION_DAY = "Day"
 
 type Points struct {
 	MeteringPoints []struct {
@@ -180,6 +181,21 @@ type Points struct {
 
 func (c *Client) MeteringPoints(point string, start, end time.Time, aggr string) (Points, error) {
 	p := Points{}
-	err := c.do("GET", "https://mit.seas-nve.dk/api/v1.0/profile/consumption/?meteringpoints=571313175200099652&start=2017-5-1&end=2017-5-31&aggr=Day", &p)
+
+	// Switch times if things are out of order
+	if !start.Before(end) {
+		end, start = start, end
+	}
+
+	url := fmt.Sprintf(
+		"https://mit.seas-nve.dk/api/v1.0/profile/consumption/?meteringpoints=%s&start=%s&end=%s&aggr=%s",
+		point,
+		start.Format("2006-1-2"),
+		end.Format("2006-1-2"),
+		aggr,
+	)
+
+	err := c.do( "GET", url, &p,)
+
 	return p, err
 }
