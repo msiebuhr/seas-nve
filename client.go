@@ -35,6 +35,9 @@ func (c *Client) Login(username, password string) error {
 	}
 	// Make login request
 	resp, err := c.c.Get("https://mit.seas-nve.dk/login/private")
+	if err != nil {
+		return err
+	}
 	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
